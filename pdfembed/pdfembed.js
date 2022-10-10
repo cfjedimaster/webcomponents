@@ -55,7 +55,6 @@ class PDFEmbed extends HTMLElement {
 		adobeDCView.registerCallback(
 			AdobeDC.View.Enum.CallbackType.EVENT_LISTENER,
 			event => {
-				console.log(event);
 				this.shadowRoot.dispatchEvent(new CustomEvent(event.type, {
 					composed: true, 
 					bubbles: true, 
@@ -63,18 +62,6 @@ class PDFEmbed extends HTMLElement {
 				}));
 			}, { enableFilePreviewEvents: true, enablePDFAnalytics: true, enableAnnotationEvents:true }
 		);
-
-		/*
-		setTimeout(() => {
-			console.log('fire event');
-			this.shadowRoot.dispatchEvent(new CustomEvent('foo', { 
-				composed: true, 
-				bubbles: true,
-				detail: {
-				}
-			}));
-		}, 2000);
-		*/
 
 	}
 
