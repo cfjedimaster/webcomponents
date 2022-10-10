@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+
+<h2>Embed</h2>
+<pdf-embed 
+url="https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea Brochure.pdf" 
+key="9861538238544ff39d37c6841344b78d"
+id="ray"
+></pdf-embed>
+
+<hr/>
+
+<script src="pdfembed.js" type="module"></script>
+
+<script>
+let ray = document.querySelector('#ray');
+ray.addEventListener('foo', e => {
+	console.log('ray foofired');
+});
+
+document.addEventListener('foo', (e) => {
+	console.log('doc level foo ran',e);
+});
+</script>
+
+</body>
+</html>
