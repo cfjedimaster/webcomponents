@@ -52,6 +52,19 @@ class PDFEmbed extends HTMLElement {
 			metaData:{fileName: this.name}
 		}, {embedMode: this.embedMode});
 
+		adobeDCView.registerCallback(
+			AdobeDC.View.Enum.CallbackType.EVENT_LISTENER,
+			event => {
+				console.log(event);
+				this.shadowRoot.dispatchEvent(new CustomEvent(event.type, {
+					composed: true, 
+					bubbles: true, 
+					detail: event.data
+				}));
+			}, { enableFilePreviewEvents: true, enablePDFAnalytics: true, enableAnnotationEvents:true }
+		);
+
+		/*
 		setTimeout(() => {
 			console.log('fire event');
 			this.shadowRoot.dispatchEvent(new CustomEvent('foo', { 
@@ -61,6 +74,7 @@ class PDFEmbed extends HTMLElement {
 				}
 			}));
 		}, 2000);
+		*/
 
 	}
 
