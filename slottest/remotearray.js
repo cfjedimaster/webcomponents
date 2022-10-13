@@ -10,13 +10,10 @@ class RemoteArray extends HTMLElement {
 			this.url = this.getAttribute('url');
 		} else console.warn('No URL passed to remote-array, I will do nothing, but I\'ll do it fast!');
 
+
 		const div = document.createElement('div');
+		div.style.display = 'none';
 		div.innerHTML = `
-		<style>
-		:host {
-			background-color: red;
-		}
-		</style>
 		<slot></slot>
 		`;
 
@@ -28,8 +25,6 @@ class RemoteArray extends HTMLElement {
 	async connectedCallback() {
 		console.log('connected callback');
 
-		// first, fetch my shit
-		console.log(this.url);
 		let req = await fetch(this.url);
 		let data = await req.json();
 		console.log(data);
@@ -42,14 +37,11 @@ class RemoteArray extends HTMLElement {
 			for(let key in d) {
 				let token = `{{${key}}}`;
 				recordHTML = recordHTML.replace(token, d[key]);
-				//console.log('look for '+key+ ' in my template', template);
 			}
 			result += recordHTML;
 		});
-		
-		console.log('--------------------');
-		console.log(result);
 
+		this.style.display = 'inline';
 		this.querySelector('div').innerHTML = result;
 	}
 }

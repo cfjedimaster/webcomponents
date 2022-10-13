@@ -24,8 +24,9 @@ class SlotOne extends HTMLElement {
 		const div = document.createElement('div');
 		div.innerHTML = `
 <h1>I'm a header</h1>
-<p>Here's my slot: <slot name="testslot">default</p>
+<p>Here's my slot: <slot name="testslot">default</slot></p>
 <h2>I'm a footer.</h2>
+<p>You may have sent me unslotted stuff, if so, here it is: <slot></slot></p>
 `;
 
 
@@ -34,12 +35,14 @@ class SlotOne extends HTMLElement {
 
 	}
 
+	/*
 	connectedCallback() {
 		console.log('c callback');
 		// remove
 		//var video2 = this.shadowRoot.querySelector( 'slot' ).assignedNodes()[0].innerText;
 		//console.log(video2);
 	}
+	*/
 }
 
 customElements.define('slot-one', SlotOne);
