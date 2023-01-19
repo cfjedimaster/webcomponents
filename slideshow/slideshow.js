@@ -16,21 +16,17 @@ class SlideShow extends HTMLElement {
 		/*
 		Convert attribute into an array and do some trimming so that the end user can have some spacing
 		*/
-		let images = this.getAttribute('images').split(',').map(i => i.trim());
+		this.images = this.getAttribute('images').split(',').map(i => i.trim());
 		//console.log('images',images);
 
-		this.totalImages = images.length;
+		this.totalImages = this.images.length;
 
-		// marker for what image to show, can be passed as an attribute, 1 based
-		if(this.hasAttribute('current')) {
-			console.log('they had a defined current');
-			this.current = parseInt(this.getAttribute('current'), 0) - 1;
-			if(this.current > this.totalImages) this.current = 0;
-		} else this.current = 0;
+		this.current = 0;
 
 		const wrapper = document.createElement('div');
+		
 		wrapper.innerHTML = `
-		<img id="currentImage" src="${images[this.current]}">
+		<img id="currentImage" src="${this.images[this.current]}">
 		<p>
 		<button id="prevButton">Previous</button> 
 		<button id="nextButton">Next</button> 
@@ -38,46 +34,35 @@ class SlideShow extends HTMLElement {
 		`;
 
 		this.$nextButton = wrapper.querySelector('#nextButton');
+		this.$prevButton = wrapper.querySelector('#prevButton');
 		this.$image = wrapper.querySelector('#currentImage');
+		
 
 		shadow.appendChild(wrapper);
 		
 	}
-
-	static get observedAttributes() {
-		return ['current'];
-	}
-
-	attributeChangedCallback(name, oldValue, newValue) {
-		console.log('attributeChangedCallback', name, oldValue, newValue);
-		this.updateImage(newValue);
-	}
-
-	get current() {
-		return this.getAttribute('current');
-	}
-
-	set current(value) {
-		console.log('set current called', value);
-		this.setAttribute('current', value);
-		console.log('did the attribute update?', this.getAttribute('current'));
-	}
-
 	connectedCallback() {
 		console.log('connected');
-		this.$nextButton.addEventListener('click', this.nextImage);
+		this.$nextButton.addEventListener('click', this.nextImage.bind(this));
+		this.$prevButton.addEventListener('click', this.prevImage.bind(this));
 	}
 
 	nextImage() {
-		console.log('do next');
-		console.log('current via this?', this.current);
-		console.log('current via getA', this.getAttribute('current'));
+		if(this.current+1 == this.totalImages) return; 
 		this.current++;
+		this.updateImage();
 	}
 
-	updateImage(idx) {
-		console.log('updateImage called', idx);
-		this.image = this.images[idx];
+	prevImage() {
+		if(this.current == 0) return; 
+		this.current--;
+		this.updateImage();
+	}
+
+	updateImage() {
+		console.log('updateImage called');
+		console.log('current is', this.current);
+		this.$image.src = this.images[this.current];
 	}
 }
 
