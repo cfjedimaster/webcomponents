@@ -76,7 +76,7 @@ class SlideShow extends HTMLElement {
 	}
 
 	updateImage(idx) {
-		console.log('updateImage', idx);
+		console.log('updateImage called', idx);
 		this.image = this.images[idx];
 	}
 }
