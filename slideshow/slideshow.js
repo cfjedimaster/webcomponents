@@ -22,16 +22,15 @@ class SlideShow extends HTMLElement {
 		this.totalImages = images.length;
 
 		// marker for what image to show, can be passed as an attribute, 1 based
-		if(this.hasAttribute('currentImage')) {
-			console.log('they had a defined currentImage');
-			this.currentImage = parseInt(this.getAttribute('currentImage'), 0) - 1;
-			if(this.currentImage > this.totalImages) this.currentImage = 0;
-		} else this.currentImage = 0;
+		if(this.hasAttribute('current')) {
+			console.log('they had a defined current');
+			this.current = parseInt(this.getAttribute('current'), 0) - 1;
+			if(this.current > this.totalImages) this.current = 0;
+		} else this.current = 0;
 
-		console.log('wtaf',this.currentImage);
 		const wrapper = document.createElement('div');
 		wrapper.innerHTML = `
-		<img id="currentImage" src="${images[this.currentImage]}">
+		<img id="currentImage" src="${images[this.current]}">
 		<p>
 		<button id="prevButton">Previous</button> 
 		<button id="nextButton">Next</button> 
@@ -46,8 +45,7 @@ class SlideShow extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		console.log('get observeredAttributes called');
-		return ['currentImage'];
+		return ['current'];
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -55,25 +53,26 @@ class SlideShow extends HTMLElement {
 		this.updateImage(newValue);
 	}
 
-	set currentImage(value) {
-		//console.log('set currentImage called', value);
-		this.setAttribute('currentImage', value);
-		//console.log('did the attribute update?', this.getAttribute('currentImage'));
+	get current() {
+		return this.getAttribute('current');
+	}
+
+	set current(value) {
+		console.log('set current called', value);
+		this.setAttribute('current', value);
+		console.log('did the attribute update?', this.getAttribute('current'));
 	}
 
 	connectedCallback() {
 		console.log('connected');
-		this.currentImage = 1;
 		this.$nextButton.addEventListener('click', this.nextImage);
 	}
 
 	nextImage() {
 		console.log('do next');
-		console.log('currentImage via this?', this.currentImage);
-		console.log('currentImage via getA', this.getAttribute('currentImage'));
-		this.currentImage ++;
-		//this.setAttribute('currentImage', this.getAttribute('currentImage') + 1);
-
+		console.log('current via this?', this.current);
+		console.log('current via getA', this.getAttribute('current'));
+		this.current++;
 	}
 
 	updateImage(idx) {
